@@ -1,7 +1,7 @@
 DLM - a Download Manager
 ========================
 
-dlm is a ease-to-use service for managing your download tasks.
+dlm is an ease-to-use service for managing your download tasks.
 
 Features
 --------

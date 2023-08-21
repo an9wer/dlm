@@ -1,14 +1,15 @@
 DLM - a Download Manager
 ========================
 
-dlm is an ease-to-use service for managing your download tasks.
+dlm is a service for managing your download tasks.
 
 Features
 --------
 
 - supporting Youtube and other video hosting websites (based on yt-dlp)
 - (WIP) supporting HTTP/HTTPS, FTP, SFTP, BitTorrent, and Metalink (baesd on aria2c)
-- (WIP) using a client-server model, with a background service (dlm.sh) and a command-line tool (dlmc.sh)
+- a background service - dlm.sh, which is utilized for managing and performing download tasks
+- a command-line tool - dlmc.sh, which is utilized for creating download tasks and interacting with the backgroud service
 
 Requirements
 ------------

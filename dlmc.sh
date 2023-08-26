@@ -29,8 +29,14 @@ while (( ${#@} > 0 )); do
 done
 
 if [[ -n $INTERACT ]]; then
-  echo -ne "Download link$REQUIRED_MARK: "
-  read link
+  while true; do
+    echo -ne "Download link$REQUIRED_MARK: "
+    read link
+    if [[ -n $link ]]; then
+      break
+    fi
+  done
+
   echo -ne "Saved filename: "
   read output
 

@@ -6,6 +6,8 @@ STATE_PENDING=1
 STATE_RUNNING=2
 STATE_DONE=3
 
+REQUIRED_MARK="\e[5m\e[31m*\e[0m"
+
 
 db_create_task() {
   local link=$1
@@ -27,8 +29,10 @@ while (( ${#@} > 0 )); do
 done
 
 if [[ -n $INTERACT ]]; then
-  read -p "Download link: " link
-  read -p "Saved filename (optional): " output
+  echo -ne "Download link$REQUIRED_MARK: "
+  read link
+  echo -ne "Saved filename: "
+  read output
 
   db_create_task "$link" "$output"
 fi

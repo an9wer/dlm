@@ -19,14 +19,27 @@ db_create_task() {
   "
 }
 
+db_list_task() {
+  sqlite3 "$DB" "
+    SELECT id, output, state
+    FROM dl_tasks
+    WHERE state = $STATE_PENDING or state = $STATE_RUNNING
+  "
+}
+
 
 # main
 while (( ${#@} > 0 )); do
   case $1 in
     -i|--interact ) INTERACT=true ;;
+    -l|--list     ) LIST=true ;;
   esac
   shift
 done
+
+if [[ -n $LIST ]]; then
+  db_list_task
+fi
 
 if [[ -n $INTERACT ]]; then
   while true; do

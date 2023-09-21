@@ -6,8 +6,20 @@ STATE_PENDING=1
 STATE_RUNNING=2
 STATE_DONE=3
 
-REQUIRED_MARK="\e[5m\e[31m*\e[0m"
+usage() {
+  echo "Usage: $(basename $0) [-il]"
+  echo ""
+  echo "  -i  interactive mode"
+  echo "  -l  list running or pending tasks"
+}
 
+field_optional() {
+  echo -ne "$*: "
+}
+
+field_required() {
+  echo -ne "$*\e[31m*\e[m: "
+}
 
 db_create_task() {
   local link=$1
@@ -19,7 +31,7 @@ db_create_task() {
   "
 }
 
-db_list_task() {
+db_list_tasks() {
   sqlite3 "$DB" "
     SELECT id, output, state
     FROM dl_tasks
@@ -29,28 +41,28 @@ db_list_task() {
 
 
 # main
-while (( ${#@} > 0 )); do
-  case $1 in
-    -i|--interact ) INTERACT=true ;;
-    -l|--list     ) LIST=true ;;
+while getopts "il" opt; do
+  case $opt in
+    i ) _opt_interaction=true ;;
+    l ) _opt_list=true ;;
+    ? ) usage; exit 1 ;;
   esac
-  shift
 done
 
-if [[ -n $LIST ]]; then
-  db_list_task
+if [ -n "$_opt_list" ]; then
+  db_list_tasks
 fi
 
-if [[ -n $INTERACT ]]; then
+if [ -n "$_opt_interaction" ]; then
   while true; do
-    echo -ne "Download link$REQUIRED_MARK: "
+    field_required "Download link"
     read link
-    if [[ -n $link ]]; then
+    if [ -n "$link" ]; then
       break
     fi
   done
 
-  echo -ne "Saved filename: "
+  field_optional "Saved filename"
   read output
 
   db_create_task "$link" "$output"
